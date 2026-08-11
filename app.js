@@ -13,6 +13,9 @@ let datiPortale = null;   // { generato, eventi[], comunicazioni[] } dopo decifr
 let annoVista, meseVista; // 1-based, mese correntemente mostrato nel mini-calendario
 
 document.getElementById("formLogin").addEventListener("submit", onSubmitLogin);
+document.getElementById("mostraPassword").addEventListener("change", e => {
+  document.getElementById("password").type = e.target.checked ? "text" : "password";
+});
 document.getElementById("btnEsci").addEventListener("click", () => location.reload());
 document.getElementById("btnMesePrec").addEventListener("click", () => spostaMese(-1));
 document.getElementById("btnMeseSucc").addEventListener("click", () => spostaMese(1));
@@ -43,7 +46,13 @@ async function onSubmitLogin(e) {
   const nome = document.getElementById("nome").value.trim();
   const password = document.getElementById("password").value;
   const erroreEl = document.getElementById("erroreLogin");
+  const btnEntra = document.getElementById("btnEntra");
   erroreEl.hidden = true;
+
+  // Blocca click ripetuti mentre una richiesta e' gia' in corso (rete lenta, doppio tap):
+  // altrimenti piu' tentativi in parallelo si accavallano sullo stesso DOM.
+  if (btnEntra.disabled) return;
+  btnEntra.disabled = true;
 
   try {
     const risposta = await fetch("data.enc", { cache: "no-store" });
@@ -66,9 +75,12 @@ async function onSubmitLogin(e) {
     meseVista = oggi.getMonth() + 1;
     aggiornaVista();
   } catch (err) {
+    console.error("Login portale fallito:", err);
     registraAccesso(nome, "errore");
     erroreEl.textContent = "Password errata, o dati del portale non ancora pubblicati.";
     erroreEl.hidden = false;
+  } finally {
+    btnEntra.disabled = false;
   }
 }
 
