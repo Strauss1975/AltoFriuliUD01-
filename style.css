@@ -20,6 +20,11 @@ body {
 
 .schermata { min-height: 100vh; }
 
+/* #login usa display:flex per centrare il riquadro; una regola ID ha piu' specificita' della
+   regola predefinita del browser per l'attributo [hidden], quindi senza questa riga il login
+   non si nascondeva mai visivamente anche a hidden=true (il contenuto compariva comunque sotto). */
+#login[hidden], #contenuto[hidden] { display: none; }
+
 /* --- Login --- */
 #login { display: flex; align-items: center; justify-content: center; padding: 24px; }
 .riquadro-login {
