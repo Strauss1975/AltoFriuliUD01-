@@ -4,7 +4,7 @@
 
 // URL del Web App Google Apps Script che registra gli accessi su un Google Sheet (vedi
 // apps-script/Codice.gs). Vuoto = tracciamento disattivato, il portale funziona comunque.
-const URL_LOG = "";
+const URL_LOG = "https://script.google.com/macros/s/AKfycbzGUxa6lS4VI2KGOsOjIAyDo63s5tIAYkEJKefnNyMBRsYR0ri6UEWyPVFp8oPewJyv/exec";
 
 const MESI = ["gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto",
               "settembre","ottobre","novembre","dicembre"];
