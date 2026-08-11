@@ -91,6 +91,9 @@ main { display: flex; gap: 24px; padding: 24px; max-width: 1200px; margin: 0 aut
 .chip-evento {
   border-radius: 3px; padding: 2px 4px; margin-bottom: 2px; font-size: 9px; font-weight: 600;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  /* Sfondo sempre pastello chiaro (stessi colori dell'app), testo scuro fisso a prescindere dal
+     tema: con --colore-testo del tema scuro (chiaro) sarebbe testo chiaro su sfondo chiaro. */
+  color: #1f2933;
 }
 
 .colonna-laterale h2 { font-size: 15px; margin: 20px 0 8px; }
