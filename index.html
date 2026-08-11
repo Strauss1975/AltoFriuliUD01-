@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Circolo A.R.S. Alto Friuli — Area soci</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="login" class="schermata">
+  <div class="riquadro-login">
+    <h1>Circolo A.R.S. Alto Friuli</h1>
+    <p class="sottotitolo">Area riservata ai soci</p>
+    <form id="formLogin">
+      <label for="nome">Nominativo</label>
+      <select id="nome" required>
+        <option value="" disabled selected>Scegli il tuo nominativo...</option>
+      </select>
+      <label for="password">Password soci</label>
+      <input type="password" id="password" autocomplete="current-password" required>
+      <button type="submit">Entra</button>
+      <p id="erroreLogin" class="errore" hidden></p>
+    </form>
+  </div>
+</div>
+
+<div id="contenuto" class="schermata" hidden>
+  <header>
+    <h1>Circolo A.R.S. Alto Friuli</h1>
+    <button id="btnEsci" class="btn-secondario">Esci</button>
+  </header>
+
+  <main>
+    <section class="colonna-calendario">
+      <div class="nav-mese">
+        <button id="btnMesePrec" aria-label="Mese precedente">&lt;</button>
+        <h2 id="testoMeseAnno"></h2>
+        <button id="btnMeseSucc" aria-label="Mese successivo">&gt;</button>
+      </div>
+      <div class="intestazione-settimana">
+        <span>Lun</span><span>Mar</span><span>Mer</span><span>Gio</span><span>Ven</span><span>Sab</span><span>Dom</span>
+      </div>
+      <div id="grigliaGiorni" class="griglia-giorni"></div>
+    </section>
+
+    <section class="colonna-laterale">
+      <h2>Prossimo mese</h2>
+      <div id="listaEventiProssimoMese" class="lista-eventi"></div>
+
+      <h2>Prossimi 3 mesi</h2>
+      <div id="listaEventiProssimi3Mesi" class="lista-eventi"></div>
+
+      <h2>Comunicazioni recenti</h2>
+      <div id="listaComunicazioni" class="lista-comunicazioni"></div>
+    </section>
+  </main>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

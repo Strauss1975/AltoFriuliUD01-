@@ -1,0 +1,106 @@
+:root {
+  --colore-sfondo: #f4f6f8;
+  --colore-superficie: #ffffff;
+  --colore-bordo: #dde3e8;
+  --colore-testo: #1f2933;
+  --colore-testo-secondario: #616e7c;
+  --colore-accento: #2b6cb0;
+  --colore-accento-testo: #ffffff;
+  --colore-errore: #c0392b;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Segoe UI, Arial, sans-serif;
+  background: var(--colore-sfondo);
+  color: var(--colore-testo);
+}
+
+.schermata { min-height: 100vh; }
+
+/* --- Login --- */
+#login { display: flex; align-items: center; justify-content: center; padding: 24px; }
+.riquadro-login {
+  background: var(--colore-superficie);
+  border: 1px solid var(--colore-bordo);
+  border-radius: 10px;
+  padding: 32px;
+  width: 100%;
+  max-width: 360px;
+}
+.riquadro-login h1 { font-size: 20px; margin: 0 0 4px; }
+.sottotitolo { color: var(--colore-testo-secondario); margin: 0 0 20px; font-size: 13px; }
+#formLogin label { display: block; font-size: 13px; margin: 14px 0 4px; }
+#formLogin input, #formLogin select {
+  width: 100%; padding: 10px; border: 1px solid var(--colore-bordo); border-radius: 6px; font-size: 14px;
+  background: var(--colore-superficie); color: var(--colore-testo);
+}
+#formLogin button {
+  width: 100%; margin-top: 20px; padding: 10px; border: none; border-radius: 6px;
+  background: var(--colore-accento); color: var(--colore-accento-testo); font-size: 15px; cursor: pointer;
+}
+.errore { color: var(--colore-errore); font-size: 13px; margin-top: 12px; }
+
+/* --- Contenuto --- */
+header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 24px; background: var(--colore-superficie); border-bottom: 1px solid var(--colore-bordo);
+}
+header h1 { font-size: 17px; margin: 0; }
+.btn-secondario {
+  padding: 8px 14px; border: 1px solid var(--colore-bordo); border-radius: 6px;
+  background: var(--colore-superficie); cursor: pointer; font-size: 13px;
+}
+
+main { display: flex; gap: 24px; padding: 24px; max-width: 1200px; margin: 0 auto; flex-wrap: wrap; }
+.colonna-calendario { flex: 2; min-width: 320px; }
+.colonna-laterale { flex: 1; min-width: 280px; }
+
+.nav-mese { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.nav-mese h2 { font-size: 16px; margin: 0; text-transform: capitalize; }
+.nav-mese button {
+  width: 32px; height: 32px; border: 1px solid var(--colore-bordo); border-radius: 6px;
+  background: var(--colore-superficie); cursor: pointer;
+}
+
+.intestazione-settimana {
+  display: grid; grid-template-columns: repeat(7, 1fr); font-size: 11px; font-weight: 600;
+  color: var(--colore-testo-secondario); text-align: center; margin-bottom: 4px;
+}
+
+.griglia-giorni { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.cella-giorno {
+  background: var(--colore-superficie); border: 1px solid var(--colore-bordo); border-radius: 6px;
+  min-height: 72px; padding: 6px; font-size: 11px;
+}
+.cella-giorno.fuori-mese { opacity: .3; }
+.numero-giorno { font-weight: 600; font-size: 12px; margin-bottom: 3px; }
+.chip-evento {
+  border-radius: 3px; padding: 2px 4px; margin-bottom: 2px; font-size: 9px; font-weight: 600;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+.colonna-laterale h2 { font-size: 15px; margin: 20px 0 8px; }
+.colonna-laterale h2:first-child { margin-top: 0; }
+.scheda-evento, .scheda-comunicazione {
+  background: var(--colore-superficie); border: 1px solid var(--colore-bordo); border-radius: 6px;
+  padding: 10px 12px; margin-bottom: 6px;
+}
+.scheda-evento .titolo, .scheda-comunicazione .titolo { font-weight: 600; font-size: 13px; }
+.scheda-evento .dettaglio, .scheda-comunicazione .dettaglio {
+  font-size: 11px; color: var(--colore-testo-secondario); margin-top: 2px;
+}
+.vuoto { font-size: 12px; color: var(--colore-testo-secondario); }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --colore-sfondo: #14181c;
+    --colore-superficie: #1e2429;
+    --colore-bordo: #333c44;
+    --colore-testo: #e8edf1;
+    --colore-testo-secondario: #9aa7b2;
+    --colore-accento: #4f93d1;
+  }
+}
