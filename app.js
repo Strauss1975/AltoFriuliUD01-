@@ -9,8 +9,9 @@ const URL_LOG = "https://script.google.com/macros/s/AKfycbzGUxa6lS4VI2KGOsOjIAyD
 const MESI = ["gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto",
               "settembre","ottobre","novembre","dicembre"];
 
-let datiPortale = null;   // { generato, eventi[], comunicazioni[] } dopo decifratura
-let annoVista, meseVista; // 1-based, mese correntemente mostrato nel mini-calendario
+let datiPortale = null;      // { generato, eventi[], comunicazioni[] } dopo decifratura
+let annoVista, meseVista;    // 1-based, mese correntemente mostrato nel mini-calendario
+let passwordSessione = null; // tenuta in memoria (mai salvata) per decifrare i singoli documenti su richiesta
 
 document.getElementById("formLogin").addEventListener("submit", onSubmitLogin);
 document.getElementById("mostraPassword").addEventListener("change", e => {
@@ -65,6 +66,7 @@ async function onSubmitLogin(e) {
       { name: "AES-GCM", iv: base64ToBytes(busta.nonce) }, chiave, cifratoConTag);
 
     datiPortale = JSON.parse(new TextDecoder().decode(chiaro));
+    passwordSessione = password;
     registraAccesso(nome, "ok");
 
     document.getElementById("login").hidden = true;
@@ -227,9 +229,52 @@ function disegnaComunicazioni() {
     const scheda = document.createElement("div");
     scheda.className = "scheda-comunicazione";
     scheda.innerHTML = `<div class="titolo">${escapeHtml(c.nome)}</div>
-                         <div class="dettaglio">${escapeHtml(c.categoria || "")} — ${formattaData(c.data)}</div>`;
+                         <div class="dettaglio">${escapeHtml(c.categoria || "")} — ${formattaData(c.data)}</div>
+                         <button type="button" class="btn-apri-documento">Apri</button>
+                         <span class="stato-documento"></span>`;
+    scheda.querySelector(".btn-apri-documento").addEventListener("click", e => apriComunicazione(c, e.target));
     contenitore.appendChild(scheda);
   });
+}
+
+const MIME_PER_ESTENSIONE = { ".pdf": "application/pdf" };
+
+// Scarica e decifra il singolo documento solo quando richiesto (non tutto insieme al login):
+// stessa cifratura di data.enc, con la password gia' usata per entrare. I PDF si aprono nel
+// browser (supporto nativo), gli altri formati vengono scaricati.
+async function apriComunicazione(c, bottone) {
+  const statoEl = bottone.nextElementSibling;
+  bottone.disabled = true;
+  statoEl.textContent = "Apertura...";
+  try {
+    const risposta = await fetch(`docs/${c.id}.enc`, { cache: "no-store" });
+    if (!risposta.ok) throw new Error("documento non trovato");
+    const busta = await risposta.json();
+
+    const chiave = await derivaChiave(passwordSessione, base64ToBytes(busta.salt), busta.iterazioni);
+    const cifratoConTag = concatBytes(base64ToBytes(busta.cifrato), base64ToBytes(busta.tag));
+    const chiaro = await crypto.subtle.decrypt(
+      { name: "AES-GCM", iv: base64ToBytes(busta.nonce) }, chiave, cifratoConTag);
+
+    const estensione = busta.estensione || c.estensione || "";
+    const tipoMime = MIME_PER_ESTENSIONE[estensione.toLowerCase()] || "application/octet-stream";
+    const url = URL.createObjectURL(new Blob([chiaro], { type: tipoMime }));
+
+    if (tipoMime === "application/pdf") {
+      window.open(url, "_blank");
+    } else {
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = c.nome + estensione;
+      link.click();
+    }
+    statoEl.textContent = "";
+  } catch (err) {
+    console.error("Apertura documento fallita:", err);
+    statoEl.textContent = "Errore apertura.";
+  } finally {
+    bottone.disabled = false;
+  }
 }
 
 function formattaData(iso) {
