@@ -228,11 +228,16 @@ function disegnaComunicazioni() {
   comunicazioni.forEach(c => {
     const scheda = document.createElement("div");
     scheda.className = "scheda-comunicazione";
+    const nota = c.nota ? `<div class="nota">${escapeHtml(c.nota)}</div>` : "";
+    const azione = c.fileDisponibile
+      ? `<button type="button" class="btn-apri-documento">Apri</button><span class="stato-documento"></span>`
+      : `<span class="stato-documento">File non più disponibile (oltre 30 giorni)</span>`;
     scheda.innerHTML = `<div class="titolo">${escapeHtml(c.nome)}</div>
                          <div class="dettaglio">${escapeHtml(c.categoria || "")} — ${formattaData(c.data)}</div>
-                         <button type="button" class="btn-apri-documento">Apri</button>
-                         <span class="stato-documento"></span>`;
-    scheda.querySelector(".btn-apri-documento").addEventListener("click", e => apriComunicazione(c, e.target));
+                         ${nota}
+                         ${azione}`;
+    const bottone = scheda.querySelector(".btn-apri-documento");
+    if (bottone) bottone.addEventListener("click", e => apriComunicazione(c, e.target));
     contenitore.appendChild(scheda);
   });
 }

@@ -106,6 +106,7 @@ main { display: flex; gap: 24px; padding: 24px; max-width: 1200px; margin: 0 aut
 .scheda-evento .dettaglio, .scheda-comunicazione .dettaglio {
   font-size: 11px; color: var(--colore-testo-secondario); margin-top: 2px;
 }
+.scheda-comunicazione .nota { font-size: 12px; margin-top: 6px; white-space: pre-wrap; }
 .vuoto { font-size: 12px; color: var(--colore-testo-secondario); }
 
 .btn-apri-documento {
